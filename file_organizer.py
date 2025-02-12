@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+from datetime import datetime
 
 def organize_downloads(downloads_folder: Path):
 
@@ -13,6 +14,12 @@ def organize_downloads(downloads_folder: Path):
         # Only process files (skip directories)
         if not item.is_file():
             continue
+    
+        mod_time = datetime.fromtimestamp(item.stat().st_mtime)
+        month = mod_time.strftime("%B")
+        year = mod_time.strftime("%Y")
+        # Create a folder name that includes both month and year.
+        dir_name = f"{month} {year}"
 
 def main():
 
