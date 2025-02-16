@@ -4,6 +4,25 @@ import os
 from pathlib import Path
 from datetime import datetime
 
+FILE_TYPE_MAPPING = {
+    'images': ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff'],
+    'pdfs': ['pdf'],
+    'documents': ['doc', 'docx', 'txt', 'odt', 'rtf', 'md'],
+    'spreadsheets': ['xls', 'xlsx', 'csv'],
+    'presentations': ['ppt', 'pptx'],
+    'videos': ['mp4', 'avi', 'mov', 'mkv', 'wmv'],
+    'audio': ['mp3', 'wav', 'flac', 'aac'],
+    'archives': ['zip', 'rar', 'tar', 'gz', '7z']
+}
+
+def get_category(extension):
+
+    ext = extension.lower().lstrip('.')
+    for category, extensions in FILE_TYPE_MAPPING.items():
+        if ext in extensions:
+            return category
+    return "others"
+
 def organize_downloads(downloads_folder: Path):
 
     if not downloads_folder.exists():
@@ -20,9 +39,11 @@ def organize_downloads(downloads_folder: Path):
         year = mod_time.strftime("%Y")
         # Create a folder name that includes both month and year.
         dir_name = f"{month} {year}"
-
         month_dir = downloads_folder / dir_name
         month_dir.mkdir()
+        category = get_category(item.suffix)
+
+
 
 def main():
 
